@@ -159,11 +159,11 @@ int main() {
 	setGameOption(GameOption::GAME_OPTION_MESSAGE_BOX_BUTTON, false);
 	setGameOption(GameOption::GAME_OPTION_ROOM_TITLE, false);
 	srand((unsigned)time(NULL));
-	bgm = Sound::create("Monkeys Spinning Monkeys.mp3");
-	success = Sound::create("jingles.mp3");
-	fail = Sound::create("fail2.mp3");
-	e_sound = Sound::create("Mario Jumping.mp3");
-	h_sound = Sound::create("Metal Clang.mp3");
+	bgm = Sound::create("music/Monkeys Spinning Monkeys.mp3");
+	success = Sound::create("music/jingles.mp3");
+	fail = Sound::create("music/fail2.mp3");
+	e_sound = Sound::create("music/Mario Jumping.mp3");
+	h_sound = Sound::create("music/Metal Clang.mp3");
 	auto scene0 = Scene::create("여의주 모으기", "images/첫화면.png");
 	scene = Scene::create("여의주 모으기", "images/배경.png");
 	auto goal = Object::create("images/학교.png", scene, 950, 610);
@@ -403,32 +403,24 @@ int main() {
 			|| (puang_class.px < 960 && puang_class.py <= 500 && key == 84)) {
 			puang_class.py = puang_class.py + 10;
 			puang->locate(scene, puang_class.px, puang_class.py);
-			cout << puang_class.py << endl;
-			cout << puang_class.px << endl;
 			return 0;
 		}
 		else if (puang_class.py >= 10 && key == 85)
 		{
 			puang_class.py = puang_class.py - 10;
 			puang->locate(scene, puang_class.px, puang_class.py);
-			cout << puang_class.py << endl;
-			cout << puang_class.px << endl;
 			return 0;
 		}
 		else if (puang_class.px >= 10 && key == 82)
 		{
 			puang_class.px = puang_class.px - 10;
 			puang->locate(scene, puang_class.px, puang_class.py);
-			cout << puang_class.py << endl;
-			cout << puang_class.px << endl;
 			return 0;
 		}
 		else if (puang_class.px <= 1200 && key == 83)
 		{
 			puang_class.px = puang_class.px + 10;
 			puang->locate(scene, puang_class.px, puang_class.py);
-			cout << puang_class.py << endl;
-			cout << puang_class.px << endl;
 			return 0;
 		}
 		});
