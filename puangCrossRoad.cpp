@@ -31,7 +31,11 @@ ObjectPtr restartButton;
 ScenePtr scene;
 int stage = 0;
 int earth_stage1 = 0, earth_stage2 = 0, earth_stage3 = 0;
-
+static SoundPtr bgm;
+static SoundPtr success;
+static SoundPtr fail;
+static SoundPtr e_sound;
+static SoundPtr h_sound;
 bool touch(int cx, int cy, int px, int py) {
 	return((cx <= px + radius && cx >= px - radius && cy <= py + radius && cy >= py - radius));
 }
@@ -43,6 +47,7 @@ ObjectPtr heart2;
 ObjectPtr heart3;
 void heartCheck(int heart) {
 	if (heart == 0) {
+		fail->play();
 		heart1->hide();
 		stage = 0;
 		earth_stage1 = 0;
@@ -92,6 +97,7 @@ void earthCheck(int getNum) {
 void goalEnter(int getNum, int x, int y) {
 	if (getNum == 3 && ((x >= 990) && (x <= 1010) && (y >= 600) && (y <= 620))) {
 		showMessage("게임 성공!");
+		success->play();
 		stage = 0;
 		earth_stage1 = 0, earth_stage2 = 0, earth_stage3 = 0;
 		endButton->locate(scene, 470, 610);
@@ -110,6 +116,7 @@ int move_right(ScenePtr scene, ObjectPtr car, ObjectPtr puang, int cx, int cy, i
 		cx = cx + cspeed;
 	}
 	else if (touch(cx, cy, px, py)) {
+		h_sound->play();
 		Sleep(25);
 		cx = cx + jump;
 		puang->setImage("images/우는푸앙.png");
@@ -130,6 +137,7 @@ int move_left(ScenePtr scene, ObjectPtr car, ObjectPtr puang, int cx, int cy, in
 		cx = cx - cspeed;
 	}
 	else if (touch(cx, cy, px, py)) {
+		h_sound->play();
 		Sleep(25);
 		cx = cx - jump;
 		puang->setImage("images/우는푸앙.png");
@@ -151,9 +159,11 @@ int main() {
 	setGameOption(GameOption::GAME_OPTION_MESSAGE_BOX_BUTTON, false);
 	setGameOption(GameOption::GAME_OPTION_ROOM_TITLE, false);
 	srand((unsigned)time(NULL));
-	clock_t starttime, endtime;
-	clock_t m_starttime, m_endtime;
-	clock_t h_starttime, h_endtime;
+	bgm = Sound::create("Monkeys Spinning Monkeys.mp3");
+	success = Sound::create("jingles.mp3");
+	fail = Sound::create("fail2.mp3");
+	e_sound = Sound::create("Mario Jumping.mp3");
+	h_sound = Sound::create("Metal Clang.mp3");
 	auto scene0 = Scene::create("여의주 모으기", "images/첫화면.png");
 	scene = Scene::create("여의주 모으기", "images/배경.png");
 	auto goal = Object::create("images/학교.png", scene, 950, 610);
@@ -285,6 +295,7 @@ int main() {
 			e1.x = e1.x - e1.speed;
 		}
 		else if (touch(e1.x, e1.y, puang_class.px, puang_class.py)) {
+			e_sound->play();
 			Sleep(25);
 			e1.x = e1.x - 105;
 			puang->setImage("images/웃는푸앙.png");
@@ -316,6 +327,7 @@ int main() {
 			e2.x = e2.x - e2.speed;
 		}
 		else if (touch(e2.x, e2.y, puang_class.px, puang_class.py)) {
+			e_sound->play();
 			Sleep(25);
 			e2.x = e2.x - 105;
 			puang->setImage("images/웃는푸앙.png");
@@ -346,6 +358,7 @@ int main() {
 			e3.x = e3.x + e3.speed;
 		}
 		else if (touch(e3.x, e3.y, puang_class.px, puang_class.py)) {
+			e_sound->play();
 			Sleep(25);
 			e3.x = e3.x + 105;
 			puang->setImage("images/웃는푸앙.png");
@@ -437,8 +450,7 @@ int main() {
 		delay1->start();
 		delay2->start();
 		delay3->start();
-		//starttime = clock();
-		//timer->start();
+		bgm->play(true);
 		return 0;
 		});
 	restartButton->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction)->bool {
@@ -464,8 +476,7 @@ int main() {
 		delay1->start();
 		delay2->start();
 		delay3->start();
-		//starttime = clock();
-		//timer->start();
+		bgm->play(true);
 		return 0;
 		});
 	endButton->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction)->bool {
